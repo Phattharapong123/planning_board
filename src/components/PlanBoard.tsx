@@ -1071,8 +1071,11 @@ export default function PlanBoard({ role = 'viewer', highlightOrderId, initialSe
     const orderId = e.dataTransfer.getData('orderId');
     if (!orderId) return;
 
-    const newXOffset    = boardStartDays + ghostX / effectiveColW;
-    const scheduledDate = toDateKey(new Date(EPOCH_MS + newXOffset * 86400000));
+          // คำนวณจากตำแหน่งเมาส์ตอนปล่อยจริง ไม่พึ่ง ghostX ที่อาจเป็น 0 หรือค้าง
+      const rectLeft = e.currentTarget.getBoundingClientRect().left;
+      const dropX    = Math.max(0, (e.clientX - rectLeft - dragOffsetX) / (zoom / 100));
+      const newXOffset    = boardStartDays + dropX / effectiveColW;
+      const scheduledDate = toDateKey(new Date(EPOCH_MS + newXOffset * 86400000));
 
     // Shift+drag on same machine: move this card AND all cards to its right
     if (shiftDrag && dragMachineId === machine.id && dragOriginX !== null) {
@@ -1594,7 +1597,12 @@ export default function PlanBoard({ role = 'viewer', highlightOrderId, initialSe
                           setGhostX(Math.max(0, (clientX - rectLeft - dragOffsetX) / (zoom / 100)));
                         });
                       }}
-                      onDragLeave={() => { setHoverRow(null); setGhostX(0); }}
+                      onDragLeave={e => {
+                        // ถ้าแค่ข้ามไปบน child (ป้ายอื่น, ghost) ไม่ถือว่าออกจากแถว
+                        if (e.currentTarget.contains(e.relatedTarget as Node | null)) return;
+                        setHoverRow(null);
+                        setGhostX(0);
+                      }}
                       onDrop={canMoveCards ? (e => handleRowDrop(e, machine)) : undefined}
                     >
                       {/* Date grid lines — zIndex 1 keeps them below all cards (z2+) */}
