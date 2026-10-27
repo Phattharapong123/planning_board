@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #050708;
+  }
+
+  /* Smooth dark mode transition on all key properties */
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+    transition-duration: 350ms;
+    transition-timing-function: ease;
+  }
+  /* But don't slow down animations/transforms */
+  .no-theme-transition,
+  .no-theme-transition *,
+  [class*="animate-"],
+  [class*="transition-"],
+  [style*="transition"] {
+    transition-property: revert;
+  }
+
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+@keyframes urgentShimmer {
+  0%   { background-position: -100% center; }
+  100% { background-position: 300% center; }
+}
+
+.animate-urgent-shimmer {
+  background: linear-gradient(
+    105deg,
+    #C2410C 0%,
+    #EA580C 35%,
+    #EA580C 40%,
+    #FDBA74 46%,
+    #FFF3E8 50%,
+    #FDBA74 54%,
+    #EA580C 60%,
+    #EA580C 65%,
+    #C2410C 100%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: urgentShimmer 1.3s ease-in-out infinite;
+  border-color: #9A3412 !important;
+  color: #fff !important;
+}
+
+/* Neon glow effects for cards in dark mode */
+.dark .neon-green {
+  box-shadow: 0 0 6px rgba(74, 222, 128, 0.6), 0 0 12px rgba(74, 222, 128, 0.2);
+}
+.dark .neon-blue {
+  box-shadow: 0 0 6px rgba(96, 165, 250, 0.6), 0 0 12px rgba(96, 165, 250, 0.2);
+}
+.dark .neon-yellow {
+  box-shadow: 0 0 6px rgba(251, 191, 36, 0.6), 0 0 12px rgba(251, 191, 36, 0.2);
+}
+.dark .neon-red {
+  box-shadow: 0 0 10px rgba(255, 34, 34, 0.85), 0 0 22px rgba(255, 34, 34, 0.3);
+}
+.dark .neon-orange {
+  box-shadow: 0 0 8px rgba(251, 146, 60, 0.75), 0 0 18px rgba(251, 146, 60, 0.25);
+}
+
+/* Dark mode scrollbar */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #0A1628;
+  border-radius: 10px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #3B6FA0;
+  border-radius: 10px;
+  border: 2px solid #0A1628;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #5A9FD4;
+}
+.dark ::-webkit-scrollbar-corner {
+  background: #0A1628;
+}
+
+/* Light mode scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #E8EDF2;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #94A3B8;
+  border-radius: 10px;
+  border: 2px solid #E8EDF2;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}

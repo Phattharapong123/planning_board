@@ -1,0 +1,1 @@
+ALTER TABLE master_plan_daily ADD COLUMN IF NOT EXISTS order_qty numeric NOT NULL DEFAULT 0;

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/Logo_UNC copy.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SMART PRODUCTION BOARD</title>
+    <meta property="og:title" content="UNC Smart Production Board" />
+    <meta property="og:description" content="UNC Smart Production Board System" />
+    <meta property="og:image" content="/Logo_UNC copy.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="/Logo_UNC copy.png" />
+  </head>
+  <body>
+    <div id="root">
+      <div id="initial-loading" style="display:flex;height:100vh;align-items:center;justify-content:center;background:#F1F0EF;font-family:system-ui,-apple-system,sans-serif">
+        <div style="text-align:center">
+          <div style="width:32px;height:32px;border:3px solid #F36B21;border-top-color:transparent;border-radius:50%;margin:0 auto 16px;animation:spin 0.8s linear infinite"></div>
+          <p style="color:#888;font-size:14px;font-weight:600">กำลังโหลด...</p>
+        </div>
+      </div>
+      <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+    <noscript>
+      <div style="display:flex;height:100vh;align-items:center;justify-content:center;background:#F1F0EF;font-family:sans-serif">
+        <p style="color:#666;font-size:14px">กรุณาเปิดใช้งาน JavaScript เพื่อใช้งานเว็บไซต์</p>
+      </div>
+    </noscript>
+  </body>
+</html>

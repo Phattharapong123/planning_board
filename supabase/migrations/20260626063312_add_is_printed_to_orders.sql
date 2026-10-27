@@ -1,0 +1,1 @@
+ALTER TABLE production_orders ADD COLUMN IF NOT EXISTS is_printed boolean NOT NULL DEFAULT false;
