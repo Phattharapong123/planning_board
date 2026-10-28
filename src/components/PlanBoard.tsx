@@ -854,7 +854,7 @@ export default function PlanBoard({ role = 'viewer', highlightOrderId, initialSe
     setLoading(true);
     const [{ data: mData }, { data: oData }] = await Promise.all([
       supabase.from('machines').select('*').order('display_order'),
-      supabase.from('production_orders').select('*').eq('is_finished', false).order('created_at').limit(5000),
+      supabase.from('production_orders').select('*').eq('is_finished', false).order('created_at', { ascending: false }).limit(5000),
     ]);
     if (mData) setMachines(mData as Machine[]);
     if (oData) setOrders(oData as ProductionOrder[]);
