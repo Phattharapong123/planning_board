@@ -599,10 +599,26 @@ export default function NextPlanBoard() {
       const insertAt = Math.min(slotIdx === -1 ? 0 : slotIdx + 1, newQueue.length);
       newQueue.splice(insertAt, 0, draggingOrder);
 
-      // Reassign x_offsets sequentially to reflect new order
-      const batchUpdates = newQueue.map((o, i) => ({ id: o.id, x_offset: (i + 1) * 100 }));
-      for (const u of batchUpdates) {
-        await supabase.from('production_orders').update({ x_offset: u.x_offset }).eq('id', u.id);
+      // x_offset is "days since 2020-01-01" and is shared with PlanBoard, which hides
+      // any card outside its visible date window. Never invent synthetic values here:
+      // re-use the machine's existing offsets (sorted) so the new order keeps every
+      // card on its real dates.
+      const EPOCH_MS = new Date('2020-01-01').getTime();
+      const offsetOf = (o: ProductionOrder): number => {
+        if (o.x_offset != null) return o.x_offset;
+        if (o.scheduled_date) return (new Date(o.scheduled_date + 'T00:00:00').getTime() - EPOCH_MS) / 86400000;
+        return (Date.now() - EPOCH_MS) / 86400000;
+      };
+      const slots = currentQueue.map(offsetOf).sort((a, b) => a - b);
+      const toDateKey = (days: number) => {
+        const d = new Date(EPOCH_MS + days * 86400000);
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      };
+      for (let i = 0; i < newQueue.length; i++) {
+        const { error } = await supabase.from('production_orders')
+          .update({ x_offset: slots[i], scheduled_date: toDateKey(slots[i]) })
+          .eq('id', newQueue[i].id);
+        if (error) { console.error('reorder failed', error); break; }
       }
       fetchData();
       return;
